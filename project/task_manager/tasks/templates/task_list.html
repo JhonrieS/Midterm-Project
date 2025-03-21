@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/yourkit.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: linear-gradient(to right,  #000000, #ffffff);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .navbar {
+            background: #343a40;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background: white;
+            padding: 30px;
+            border-top: 5px solid #4c8bf5;
+        }
+        .task-card:hover {
+            transform: translateY(-3px);
+        }
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .btn-custom {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .btn-edit {
+            background-color: #198754;
+            color: white;
+            border: none;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+        }
+        .btn-create {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            font-size: 14px;
+            padding: 10px 16px;
+        }
+        .small-text {
+            font-size: 13px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <h4 class="text-center fw-bold mb-3">Task List</h4>
+
+        {% if tasks %}
+            <div class="row">
+                {% for task in tasks %}
+                    <div class="col-md-4 col-lg-3 mb-3">
+                        <div class="task-card">
+                            <h6 class="fw-bold text-primary mb-1">{{ task.title }}</h6>
+                            <p class="small-text">{{ task.description|truncatewords:10 }}</p>
+                            <p class="small-text"><strong>Due:</strong> {{ task.due_date }}</p>
+                            <p>
+                                <strong>Status:</strong>
+                                <span class="status-badge {% if task.status == 'Completed' %} bg-success text-white {% else %} bg-warning text-dark {% endif %}">
+                                    {{ task.status }}
+                                </span>
+                            </p>
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'task_update' task.id %}" class="btn btn-custom btn-edit">
+                                    <i class="fas fa-edit"></i> Edit Task
+                                </a>
+                                <a href="{% url 'task_delete' task.id %}" class="btn btn-custom btn-delete">
+                                    <i class="fas fa-trash"></i> Delete Task
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center"><i class="fas fa-info-circle"></i> No tasks available.</div>
+        {% endif %}
+
+        <!-- Add New Task Button -->
+        <div class="text-center mt-3">
+            <a href="{% url 'task_create' %}" class="btn btn-custom btn-create">
+                <i class="fas fa-plus-circle"></i> Create New Task
+            </a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
